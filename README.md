@@ -1,11 +1,12 @@
-# 3D-Engine-in-Pure-C
+# 3D-Engine-in-C
 Here we go, let's make 3D Engine in C. Why won't I do it in the easier programming languages like Python? Because I like challenges lol (this will be a long ride, help).
 Every day I will write about my progress.
 
 
 (1) So, I've begun watching some tutorials and read documentation about computer graphics. And for your record I've never done anything related to 3D engine etc. so it was really interesting. And what I've found out:
 - C is literally one of the worst languages I could write a 3D engine,
-- I will need SDL.h library for providing low level access to graphics hardware via OpenGL and Direct3D and also creating and controlling a window, (I will use the 2.0 version, I will write how to install it later),
+- I will need SDL.h library for providing low level access to graphics hardware via OpenGL (which I will probably choose because Vulcan might be problematic) and Direct3D and also creating and controlling a window, (I will use the 2.0 version, I will write how to install it later),
+- 
 Tomorrow I will start making the first steps, so stay tuned! 
 
 Sources from which I learned a lot:
