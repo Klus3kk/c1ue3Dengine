@@ -23,4 +23,13 @@ Books:
 - Physically Based Rendering: From Theory To Implementation by Matt Pharr, Wenzel Jakob, and Greg Humphreys
 
 - 
-(2) Alright, I've did some more reading and let me tell you, it's gonna take a long time to get to generate some advanced 3D models. Anyways 
+(2) Alright, I've did some more reading and let me tell you, it's gonna take a long time to get to generate some advanced 3D models. Anyways, during my search for finding how can I install the SDL library (and no, you can't just use the cmd for downloading it, of course it had to be difficult x_x) I found out about GLEW. It's basically a loader, that helps manage OpenGL in an "easy way" and it adds more modern options (we'll see in practice if that's true). So, I think that it will help me with the development. So, we're adding GLEW to the list of "Important Libraries".
+
+
+UPDATE: IT TOOK A LOT OF TIME BUT FINALLY, I'VE PREPARED EVERYTHING. Even the cursed SDL library (installing it took probably 1-2h cuz of so little tutorials of how to do it, but I managed to do it). Unfortunately I had to change the environment from VS Code to VS because somehow, it just didn't work on VS Code. 
+
+
+So now, I've started preparations and basically, I just want to print a window with a single pixel on the center, that's all I care about right now.
+
+
+And here's my final result for today:
