@@ -22,7 +22,7 @@ Books:
 - 3D Graphics Rendering Cookbook by Sergey Kosarevsky
 - Physically Based Rendering: From Theory To Implementation by Matt Pharr, Wenzel Jakob, and Greg Humphreys
 
-- 
+  
 (2) Alright, I've did some more reading and let me tell you, it's gonna take a long time to get to generate some advanced 3D models. Anyways, during my search for finding how can I install the SDL library (and no, you can't just use the cmd for downloading it, of course it had to be difficult x_x) I found out about GLEW. It's basically a loader, that helps manage OpenGL in an "easy way" and it adds more modern options (we'll see in practice if that's true). So, I think that it will help me with the development. So, we're adding GLEW to the list of "Important Libraries".
 
 
@@ -33,3 +33,5 @@ So now, I've started preparations and basically, I just want to print a window w
 
 
 And here's my final result for today:
+![Stars in the Sky (not with Diamonds)](https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/5f278652-adc7-4dd4-ab34-3344530c8518)
+
