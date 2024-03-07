@@ -21,3 +21,6 @@ Videos:
 Books:
 - 3D Graphics Rendering Cookbook by Sergey Kosarevsky
 - Physically Based Rendering: From Theory To Implementation by Matt Pharr, Wenzel Jakob, and Greg Humphreys
+
+- 
+(2) Alright, I've did some more reading and let me tell you, it's gonna take a long time to get to generate some advanced 3D models. Anyways 
