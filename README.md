@@ -35,5 +35,5 @@ So now, I've started preparations and basically, I just want to print a window w
 And here's my final result for today:
 
 
-<img src="https://github.com/favicon.ico](https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/5f278652-adc7-4dd4-ab34-3344530c8518)https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/5f278652-adc7-4dd4-ab34-3344530c8518" width="48">
+<img src="[https://your-image-url.type](https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/fe524b90-3329-4ecc-be93-171d9f14abff)https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/fe524b90-3329-4ecc-be93-171d9f14abff" width="100" height="100">
 
