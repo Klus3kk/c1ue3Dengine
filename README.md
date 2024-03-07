@@ -33,5 +33,7 @@ So now, I've started preparations and basically, I just want to print a window w
 
 
 And here's my final result for today:
-![Stars in the Sky (not with Diamonds)](https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/5f278652-adc7-4dd4-ab34-3344530c8518)
+
+
+![Stars in the Sky (not with Diamonds)](https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/5f278652-adc7-4dd4-ab34-3344530c8518 = 250x250)
 
