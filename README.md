@@ -39,3 +39,5 @@ And here's my final result for today:
   <img width="460" height="300" src="https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/fe524b90-3329-4ecc-be93-171d9f14abff">
 </p>
 
+
+(3)
