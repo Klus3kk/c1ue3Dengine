@@ -40,4 +40,11 @@ And here's my final result for today:
 </p>
 
 
-(3)
+(3) Today I've read about how where should I begin development of my 3D engine. And let me tell you, there's a lot of math concepts to comprehend, like 3-dimensional Cartesian spaces, points and vectors, tuples, scalars etc.
+Here are some links that I found useful:
+- https://code.tutsplus.com/lets-build-a-3d-graphics-engine-points-vectors-and-basic-concepts--gamedev-8143t
+- (here's a cool project that someone made, it's pretty similar of what I want to make) https://www.codeproject.com/Articles/1168552/Build-My-Own-3D-Graphics-Engine-Step-By-Step
+- (that's also a pretty great tutorial) https://www.sitepoint.com/write-3d-soft-engine-scratch-part-1/
+
+
+
