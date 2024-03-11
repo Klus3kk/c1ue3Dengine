@@ -47,7 +47,7 @@ Here are some links that I found useful:
 - (that's also a pretty great tutorial) https://www.sitepoint.com/write-3d-soft-engine-scratch-part-1/
 
 
-(4) Today I was playing around with 2D graphics to get the graphs of how should I begin. I've come for an idea, that I can replace classes with structures, which work pretty sweet.
+(4) Today I was playing around with 2D graphics to get the grasp of how should I begin. I've come for an idea, that I can replace classes with structures, which work pretty sweet.
 
 
 I've started creating some engine logic. I've made 5 main functions which will act as a heart of the engine:
