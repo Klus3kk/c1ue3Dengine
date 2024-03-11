@@ -47,5 +47,22 @@ Here are some links that I found useful:
 - (that's also a pretty great tutorial) https://www.sitepoint.com/write-3d-soft-engine-scratch-part-1/
 
 
-(4)
+(4) Today I was playing around with 2D graphics to get the graphs of how should I begin. I've come for an idea, that I can replace classes with structures, which work pretty sweet.
+
+
+I've started creating some engine logic. I've made 5 main functions which will act as a heart of the engine:
+- setup(): as the name suggests it's basically a setup of (currently) width and height of the screen, which uses x and y from the "Screen" structure,
+- initiate(): it creates a window and a renderer,
+- render(): it's rendering the figures, characters etc.
+- loop(): i don't think I should explain that lol
+- end(): quits and saves everything
+
+
+So, as a test, I've tried to create some random structures, which will be useful in the future (like 2D figures, vectors (which aren't present in the C) and some useful functions for faster programming).
+And here's an example: A SMILE FACE!
+<p align="center">
+  <img width="460" height="300" src="https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/e48229b9-fb65-4384-9815-8943cd782cf9">
+</p>
+
+
 
