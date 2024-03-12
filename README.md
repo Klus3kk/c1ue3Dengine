@@ -5,7 +5,7 @@ Every day I will write about my progress.
 
 (1) So, I've begun watching some tutorials and read documentation about computer graphics. And for your record I've never done anything related to 3D engine etc. so it was really interesting. And what I've found out:
 - C is literally one of the worst languages I could write a 3D engine,
-- I will need SDL.h library for providing low level access to graphics hardware via OpenGL (which I will probably choose because Vulcan might be problematic) and Direct3D and also creating and controlling a window, (I will use the 2.0 version, I will write how to install it later),
+- I will need SDL.h library (UPDATE: BIG MISTAKE LATER) for providing low level access to graphics hardware via OpenGL (which I will probably choose because Vulcan might be problematic) and Direct3D and also creating and controlling a window, (I will use the 2.0 version, I will write how to install it later),
 - 
 Tomorrow I will start making the first steps, so stay tuned! 
 
@@ -66,8 +66,18 @@ And here's an example. BEHOLD: A SMILE FACE!
 
 
 (5) My goals today are:
+- Draw a 3D Cube,
 - Implement a FPS counter/cap,
 - Try to make a camera, which can be moved by an user,
+
+
+I've also found out that I probably need GLFW library more than SDL one, because SDL is more used in 2D engines than 3D, so...that's great. I need to rewrite...basically all the code that has SDL in it.....
+
+
+- https://www.glfw.org/docs/3.3/quick.html (documentation of GLFW)
+
+
+
 
 
 (6)
