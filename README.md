@@ -67,8 +67,7 @@ And here's an example. BEHOLD: A SMILE FACE!
 
 (5) My goals today are:
 - Draw a 3D Cube,
-- Implement a FPS counter/cap,
-- Try to make a camera, which can be moved by an user,
+- Try to make a camera, which can be moved by an user, (Day 6 probably, cuz it's a lot more complicated than I thought...)
 
 
 I've also found out that I probably need GLFW library more than SDL one, because SDL is more used in 2D engines than 3D, so...that's great. I need to rewrite...basically all the code that has SDL in it.....
