@@ -59,10 +59,16 @@ I've started creating some engine logic. I've made 5 main functions which will a
 
 
 So, as a test, I've tried to create some random structures, which will be useful in the future (like 2D figures, vectors (which aren't present in the C) and some useful functions for faster programming).
-And here's an example: A SMILE FACE!
+And here's an example. BEHOLD: A SMILE FACE!
 <p align="center">
   <img width="460" height="300" src="https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/e48229b9-fb65-4384-9815-8943cd782cf9">
 </p>
 
 
+(5) My goals today are:
+- Implement a FPS counter/cap,
+- Try to make a camera, which can be moved by an user,
+
+
+(6)
 
