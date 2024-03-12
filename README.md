@@ -76,7 +76,7 @@ I've also found out that I probably need GLFW library more than SDL one, because
 - https://www.glfw.org/docs/3.3/quick.html (documentation of GLFW)
 
 
-
+Well, unfortunatelly I won't do that today, I had so much trouble with fixing everything. But, I implemented vectors in C today, so that's some progress, I guess...
 
 
 (6)
