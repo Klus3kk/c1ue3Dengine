@@ -79,5 +79,5 @@ I've also found out that I probably need GLFW library more than SDL one, because
 Well, unfortunatelly I won't do that today, I had so much trouble with fixing everything. But, I implemented vectors in C today, so that's some progress, I guess...
 
 
-(6)
+(6) Alright, big day today. Finally I'll start making a 3D Cube. I hope that I won't encounter many problems (like yesterday...).
 
