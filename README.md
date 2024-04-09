@@ -1,5 +1,5 @@
 # 3D-Engine-in-C
-Let's make 3D Engine in C. Why won't I do it in the easier programming languages like Python? Because I like challenges.
+Let's make a 3D Engine in C. Why won't I do it in the easier programming languages like Python? Because I like challenges.
 Every day I will write about my progress.
 
 
