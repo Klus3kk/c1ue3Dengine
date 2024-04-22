@@ -81,3 +81,19 @@ Well, unfortunatelly I won't do that today, I had so much trouble with fixing ev
 
 (6) Alright, big day today. Finally I'll start making a 3D Cube. I hope that I won't encounter many problems (like yesterday...).
 
+
+(7-9) Made a lot of progress:
+- Camera movement,
+- Basic controls (WSAD to move, Space - Go up, Shift - Go down),
+- Debug mode for future debugging,
+- Pressing C creates a cube with random color,
+- Added ObjectManager for managing created objects,
+- Random_Color for generating the random color for the cube (might be deleted in the future)
+
+
+Here's the example of the program for now:
+<p align="center">
+  <img width="460" height="300" src="https://github.com/dataproctech/projekt-w-jezyku-c-Klus3kk/assets/93116510/2adab3f7-8501-4be4-9d7a-6b661f89dfeb">
+</p>
+
+(10)
