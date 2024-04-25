@@ -90,10 +90,18 @@ Well, unfortunatelly I won't do that today, I had so much trouble with fixing ev
 - Added ObjectManager for managing created objects,
 - Random_Color for generating the random color for the cube (might be deleted in the future)
 
-
 Here's the example of the program for now:
 <p align="center">
   <img width="460" height="300" src="https://github.com/dataproctech/projekt-w-jezyku-c-Klus3kk/assets/93116510/2adab3f7-8501-4be4-9d7a-6b661f89dfeb">
 </p>
 
-(10)
+(10-13)
+Added:
+- New shapes: Sphere, Cylinder, Pyramid
+- Fixed the camera
+
+(14)
+Added:
+- Texture Manager for loading textures to the objects
+- Toggling the texture(T)/color(L) for the object 
+
