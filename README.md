@@ -1,6 +1,5 @@
 # 3D-Engine-in-C
-Let's make a 3D Engine in C. Why won't I do it in the easier programming languages like Python? Because I like challenges.
-Every day I will write about my progress.
+Let's make a 3D Engine in C. Every day I will write about my progress.
 
 
 (1) So, I've begun watching some tutorials and read documentation about computer graphics. And for your record I've never done anything related to 3D engine etc. so it was really interesting. And what I've found out:
