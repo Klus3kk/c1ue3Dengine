@@ -104,3 +104,10 @@ Added:
 - Texture Manager for loading textures to the objects
 - Toggling the texture(T)/color(L) for the object 
 
+(15-25)
+Added:
+- Light/shading for objects (Phong shading),
+- Implemented new system for textures (using SOIL2 library),
+- Added new object, Plane,
+- Starting implementing: SkyBox, loading the models from the file (with extensions like OBJ, 3DS) using Assimp, physics for the objects like collision and gravity (using ODE),
+- There's a lot of errors in this version, like textures not working on every objects
