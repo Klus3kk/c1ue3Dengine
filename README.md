@@ -86,6 +86,6 @@ C1ue Engine is a 3D rendering engine developed for creating and managing 3D obje
 ## Photo
 
 <p align="center">
-  <img width="760" height="600" src="https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/5d7d7ee0-69e4-47eb-b4dd-53081c3f799c">
+  <img width="1080" height="720" src="https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/5d7d7ee0-69e4-47eb-b4dd-53081c3f799c">
 </p>
 
