@@ -19,13 +19,13 @@
     <li>
       <a href="#modules">Modules</a>
       <ul>
-        <li><a href="rendering">Rendering</a></li>
-        <li><a href="materials_and_textures">Materials and Textures</a></li>
-        <li><a href="model_loading">Model Loading</a></li>
-        <li><a href="object_management">Object Management</a></li>
-        <li><a href="camera_and_vectors">Camera and Vectors</a></li>
-        <li><a href="resource_loading">Resource Loading</a></li>
-        <li><a href="user_interface">User Interface</a></li>
+        <li><a href="#rendering">Rendering</a></li>
+        <li><a href="#materials_and_textures">Materials and Textures</a></li>
+        <li><a href="#model_loading">Model Loading</a></li>
+        <li><a href="#object_management">Object Management</a></li>
+        <li><a href="#camera_and_vectors">Camera and Vectors</a></li>
+        <li><a href="#resource_loading">Resource Loading</a></li>
+        <li><a href="#user_interface">User Interface</a></li>
       </ul>
       <a href="#photo">Example usage of the Engine</a>
   </ol>
