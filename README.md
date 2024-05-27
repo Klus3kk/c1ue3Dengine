@@ -14,6 +14,7 @@
         <li><a href="#camera_controls">Camera Controls</a></li>
         <li><a href="#object_management">Object Management</a></li>
         <li><a href="#other_controls">Other Controls</a></li>
+        <li><a href="#gui_controls">GUI Controls</a></li>
       </ul>
     </li>
     <li>
@@ -44,25 +45,42 @@ C1ue Engine is a 3D rendering engine developed for creating and managing 3D obje
 * File Operations: Supports saving and loading game states, logging, and configuration settings.
 
 ## Usage
+
 ### Camera Controls
 * W/A/S/D: Move forward/left/backward/right
 * Space: Move up
 * Left Shift: Move down
 * Mouse Movement: Look around
-* CTRL: Speed Up the Movement
+* Left Ctrl: Speed up the movement
+* Right Click + Alt: Pan camera
+* Left Click: Select object
+
 ### Object Management
 * O: Create a plane
 * C: Create a cube
 * H: Create a pyramid
 * K: Create a sphere
 * B: Create a cylinder
+* I: Create light
+
 ### Other Controls
 * T: Toggle textures
 * L: Toggle colors
 * J: Toggle shading
 * Q: Toggle PBR materials
-* P: Pause the Engine
-* E: Exit the program
+* P: Pause/Resume engine
+* E: Exit the engine
+
+### GUI Controls
+* F1: Change the light/dark theme
+* F: Toggle fullscreen
+* Ctrl + Z: Undo the action
+* Ctrl + Y: Redo the action
+* Ctrl + X: Cut the selected object
+* Ctrl + C: Copy the selected object
+* Ctrl + V: Paste the object
+* Delete: Delete the object (for the selected object in hierarchy window)
+
   
 ## Modules
 ### Rendering:
