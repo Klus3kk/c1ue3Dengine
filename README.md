@@ -51,9 +51,8 @@ C1ue Engine is a 3D rendering engine developed for creating and managing 3D obje
 * Space: Move up
 * Left Shift: Move down
 * Mouse Movement: Look around
-* Left Ctrl: Speed up the movement
-* Right Click + Alt: Pan camera
-* Left Click: Select object
+* Right Click: Pan camera (while engine is paused)
+* Left Click + Alt: Drag camera (while engine is paused)
 
 ### Object Management
 * O: Create a plane
