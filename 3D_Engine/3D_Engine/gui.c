@@ -83,13 +83,15 @@ int find_selected_object_index(SceneObject* selected_object) {
 
 // Change material function
 void material_picker_window(struct nk_context* ctx) {
-    if (selected_object && nk_begin(ctx, "Change Material", nk_rect(10, 650, 300, 200), NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_CLOSABLE)) {
+    if (selected_object && nk_begin(ctx, "Change Material", nk_rect(400, 650, 300, 200), NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_CLOSABLE)) {
         nk_layout_row_dynamic(ctx, 25, 1);
         for (int i = 0; i < materialCount; i++) {
             if (nk_button_label(ctx, materialNames[i])) {
                 PBRMaterial* newMaterial = getMaterial(materialNames[i]);
                 if (newMaterial) {
-                    selected_object->object.material = *newMaterial;
+                    PBRMaterial* clonedMaterial = (PBRMaterial*)malloc(sizeof(PBRMaterial));
+                    *clonedMaterial = *newMaterial;
+                    selected_object->object.material = *clonedMaterial;
                     selected_object->object.usePBR = true;
                     selected_object->object.useTexture = false;
                     selected_object->object.useColor = false;
@@ -107,13 +109,15 @@ void material_picker_window(struct nk_context* ctx) {
 
 // Change texture function
 void texture_picker_window(struct nk_context* ctx) {
-    if (selected_object && nk_begin(ctx, "Change Texture", nk_rect(10, 860, 300, 200), NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_CLOSABLE)) {
+    if (selected_object && nk_begin(ctx, "Change Texture", nk_rect(400, 860, 300, 200), NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_CLOSABLE)) {
         nk_layout_row_dynamic(ctx, 25, 1);
         for (int i = 0; i < textureCount; i++) {
             if (nk_button_label(ctx, textureNames[i])) {
                 GLuint newTexture = getTexture(textureNames[i]);
                 if (newTexture != 0) {
-                    selected_object->object.textureID = newTexture;
+                    GLuint* clonedTextureID = (GLuint*)malloc(sizeof(GLuint));
+                    *clonedTextureID = newTexture;
+                    selected_object->object.textureID = *clonedTextureID;
                     selected_object->object.useTexture = true;
                     selected_object->object.usePBR = false;
                     selected_object->object.useColor = false;
@@ -128,6 +132,7 @@ void texture_picker_window(struct nk_context* ctx) {
         nk_end(ctx);
     }
 }
+
 
 // Import model function
 void import_model() {
@@ -146,17 +151,18 @@ void import_model() {
     }
 }
 
-// Clipboard functions
 void cut_object() {
     if (selected_object) {
-        int index = selected_object - objectManager.objects;
-        clipboard_object = (SceneObject*)malloc(sizeof(SceneObject));
-        if (clipboard_object) {
-            *clipboard_object = *selected_object;
-            removeObjectWithAction(index);
-            isCutOperation = true;
-            selected_object = NULL;
-            printf("Cut object at index: %d\n", index);
+        int index = find_selected_object_index(selected_object);
+        if (index != -1) {
+            clipboard_object = (SceneObject*)malloc(sizeof(SceneObject));
+            if (clipboard_object) {
+                *clipboard_object = *selected_object;
+                isCutOperation = true;
+                removeObjectWithAction(index);
+                selected_object = NULL;
+                printf("Cut object at index: %d\n", index);
+            }
         }
     }
 }
@@ -166,6 +172,12 @@ void copy_object() {
         clipboard_object = (SceneObject*)malloc(sizeof(SceneObject));
         if (clipboard_object) {
             *clipboard_object = *selected_object;
+            if (selected_object->object.type == OBJ_MODEL) {
+                clipboard_object->object.data.model.meshes = (Mesh*)malloc(selected_object->object.data.model.meshCount * sizeof(Mesh));
+                for (unsigned int i = 0; i < selected_object->object.data.model.meshCount; i++) {
+                    clipboard_object->object.data.model.meshes[i] = selected_object->object.data.model.meshes[i];
+                }
+            }
             isCutOperation = false;
         }
     }
@@ -174,6 +186,13 @@ void copy_object() {
 void paste_object() {
     if (clipboard_object) {
         SceneObject newObject = *clipboard_object;
+        if (clipboard_object->object.type == OBJ_MODEL) {
+            newObject.object.data.model.meshes = (Mesh*)malloc(clipboard_object->object.data.model.meshCount * sizeof(Mesh));
+            for (unsigned int i = 0; i < clipboard_object->object.data.model.meshCount; i++) {
+                newObject.object.data.model.meshes[i] = clipboard_object->object.data.model.meshes[i];
+            }
+        }
+
         if (isCutOperation) {
             addObjectWithAction(newObject.object.type, newObject.object.useTexture, newObject.object.textureID, newObject.object.useColor,
                 (newObject.object.type == OBJ_MODEL ? &newObject.object.data.model : NULL), newObject.object.material, newObject.object.usePBR);
@@ -662,17 +681,6 @@ const char* objectTypeName(ObjectType type) {
     }
 }
 
-// Control window function
-void control_window(struct nk_context* ctx) {
-    if (nk_begin(ctx, "Control Panel", nk_rect(50, 50, 200, 100), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
-        nk_layout_row_static(ctx, 30, 80, 1);
-        if (nk_button_label(ctx, isRunning ? "Pause" : "Play")) {
-            isRunning = !isRunning;
-        }
-        nk_end(ctx);
-    }
-}
-
 // Show about window function
 void show_about_window(struct nk_context* ctx) {
     float about_width = 400; 
@@ -766,12 +774,17 @@ void color_picker_window(struct nk_context* ctx) {
 
 // Settings window function
 void settings_window(struct nk_context* ctx) {
-    static int width, height;
+    static int width = 1920, height = 1080;
     static struct nk_colorf bg_color = { 0.0f, 0.0f, 0.0f, 1.0f };
     static float camera_speed;
     static float movement_speed;
 
-    glfwGetWindowSize(window, &width, &height);
+    // Initialize width and height once, not every frame
+    static int initialized = 0;
+    if (!initialized) {
+        glfwGetWindowSize(window, &width, &height);
+        initialized = 1;
+    }
 
     camera_speed = camera.MouseSensitivity;
     movement_speed = camera.MovementSpeed;
@@ -995,7 +1008,7 @@ void help_menu(struct nk_context* ctx) {
 
 // Object menu function
 void object_menu(struct nk_context* ctx) {
-    if (nk_menu_begin_label(ctx, "Objects", NK_TEXT_LEFT, nk_vec2(120, 250))) {
+    if (nk_menu_begin_label(ctx, "Objects", NK_TEXT_LEFT, nk_vec2(200, 250))) {  // Increase the width from 120 to 200
         nk_layout_row_dynamic(ctx, 25, 1);
         if (nk_menu_item_label(ctx, "Add Cube", NK_TEXT_LEFT)) {
             addObject(&camera, OBJ_CUBE, texturesEnabled, textureIndex, colorsEnabled, NULL, *getMaterial("peacockOre"), true);
@@ -1025,6 +1038,7 @@ void object_menu(struct nk_context* ctx) {
     }
 }
 
+
 // History window function
 void history_window(struct nk_context* ctx) {
     if (nk_begin(ctx, "History", nk_rect(50, 50, 400, 600), NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE)) {
@@ -1036,43 +1050,7 @@ void history_window(struct nk_context* ctx) {
     }
 }
 
-// Object creator window function
-void object_creator_window(struct nk_context* ctx) {
-    if (nk_begin(ctx, "Object Creator", nk_rect(400, 50, 300, 400), NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_CLOSABLE)) {
-        nk_layout_row_dynamic(ctx, 25, 1);
-        PBRMaterial* defaultMaterial = getMaterial("peacockOre");
-        GLuint defaultTexture = getTexture("blue");
 
-        if (nk_button_label(ctx, "Add Cube")) {
-            addObjectWithAction(OBJ_CUBE, true, defaultTexture, true, NULL, *defaultMaterial, true);
-        }
-        if (nk_button_label(ctx, "Add Sphere")) {
-            addObjectWithAction(OBJ_SPHERE, true, defaultTexture, true, NULL, *defaultMaterial, true);
-        }
-        if (nk_button_label(ctx, "Add Pyramid")) {
-            addObjectWithAction(OBJ_PYRAMID, true, defaultTexture, true, NULL, *defaultMaterial, true);
-        }
-        if (nk_button_label(ctx, "Add Plane")) {
-            addObjectWithAction(OBJ_PLANE, true, defaultTexture, true, NULL, *defaultMaterial, true);
-        }
-        if (nk_button_label(ctx, "Add Cylinder")) {
-            addObjectWithAction(OBJ_CYLINDER, true, defaultTexture, true, NULL, *defaultMaterial, true);
-        }
-        if (nk_button_label(ctx, "Add Point Light")) {
-            add_point_light();
-        }
-        if (nk_button_label(ctx, "Add Directional Light")) {
-            add_directional_light();
-        }
-        if (nk_button_label(ctx, "Add Spotlight")) {
-            add_spotlight();
-        }
-        nk_end(ctx);
-    }
-    else {
-        nk_end(ctx);
-    }
-}
 
 // Main GUI function
 void main_gui() {
@@ -1112,7 +1090,7 @@ void main_gui() {
     }
     nk_end(ctx);
 
-    if (show_hierarchy) {
+    if (show_hierarchy && !isRunning) {
         hierarchy_window(ctx, hierarchyX, hierarchyY, hierarchyWidth, hierarchyHeight);
     }
 
@@ -1121,20 +1099,20 @@ void main_gui() {
     }
 
     if (show_debug) {
-        int debug_window_x = 50;
-        int debug_window_y = 50;
+        int debug_window_x = inspectorX - 200;
+        int debug_window_y = menuHeight;
         int debug_window_width = 200;
         int debug_window_height = 600;
 
         debug_window(ctx, debug_window_x, debug_window_y, debug_window_width, debug_window_height);
     }
 
-    if (show_color_picker) {
+    if (show_color_picker && !isRunning) {
         color_picker_window(ctx);
     }
 
     // Show inspector window if an object is selected
-    if (selected_object != NULL && show_inspector) {
+    if (selected_object != NULL && show_inspector && !isRunning) {
         inspector_window(ctx, inspectorX, inspectorY, inspectorWidth, inspectorHeight);
     }
 
@@ -1152,10 +1130,6 @@ void main_gui() {
 
     if (show_controls) {
         show_controls_window(ctx);
-    }
-
-    if (show_object_creator) {
-        object_creator_window(ctx);
     }
 }
 

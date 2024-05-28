@@ -100,7 +100,6 @@ void freeModel(Model* model) {
             glDeleteBuffers(1, &mesh->EBO);
             mesh->EBO = 0;
         }
-
         if (mesh->indices) {
             free(mesh->indices);
             mesh->indices = NULL;
@@ -112,3 +111,4 @@ void freeModel(Model* model) {
         model->meshes = NULL;
     }
 }
+

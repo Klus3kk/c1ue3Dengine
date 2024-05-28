@@ -18,7 +18,6 @@ void initObjectManager() {
     }
 }
 
-
 void addObjectToManager(SceneObject newObject) {
     static int currentID = 0; // Static variable to keep track of unique IDs
     if (objectManager.count < MAX_OBJECTS) {
@@ -38,12 +37,12 @@ void addObject(Camera* camera, ObjectType type, bool useTexture, int textureInde
     newObject.object.useLighting = true;
     newObject.object.usePBR = usePBR;
 
-    newObject.object.material = material;
-
-    // Set default texture if none specified
-    if (textureIndex == -1) {
-        newObject.object.textureID = getTexture("bricks"); 
+    if (!useTexture && !usePBR) {
+        newObject.object.useColor = true;
     }
+
+    newObject.object.material = material;
+    newObject.object.textureID = useTexture ? getTexture(textureNames[textureIndex]) : 0;
 
     newObject.position = vector_add(camera->Position, vector_scale(camera->Front, 5.0f)); // Position in front of the camera
     newObject.rotation = (Vector3){ 0.0f, 0.0f, 0.0f };
@@ -121,11 +120,11 @@ void removeObject(int index) {
         printf("Unknown object type at index: %d\n", index);
         break;
     }
-    close_object_windows();
+
     // Shift objects down in the array to fill the gap
     for (int i = index; i < objectManager.count - 1; ++i) {
         objectManager.objects[i] = objectManager.objects[i + 1];
-        printf("Shifting object from index %d to %d\n", i + 1, i); 
+        printf("Shifting object from index %d to %d\n", i + 1, i);
     }
 
     // Decrement the count of objects after shifting
@@ -141,8 +140,6 @@ void removeObject(int index) {
         printf("Selected object was removed. Clearing selection.\n");
     }
 }
-
-
 void cleanupObjects() {
     for (int i = 0; i < objectManager.count; i++) {
         removeObject(i);
@@ -161,7 +158,7 @@ void updateObjectInManager(SceneObject* updatedObject) {
             objectManager.objects[i].color = updatedObject->color;
             objectManager.objects[i].selected = updatedObject->selected;
 
-            printf("Updated object in manager: ID=%d, Index=%d\n", updatedObject->id, i); 
+            printf("Updated object in manager: ID=%d, Index=%d\n", updatedObject->id, i);
 
             // Update the selected_object pointer if necessary
             if (selected_object && selected_object->id == updatedObject->id) {
@@ -171,9 +168,6 @@ void updateObjectInManager(SceneObject* updatedObject) {
         }
     }
 }
-
-
-
 
 void drawObject(const SceneObject* obj, const Matrix4x4 viewMatrix, const Matrix4x4 projMatrix) {
     glUseProgram(shaderProgram);
@@ -194,6 +188,11 @@ void drawObject(const SceneObject* obj, const Matrix4x4 viewMatrix, const Matrix
 
     GLint colorLoc = glGetUniformLocation(shaderProgram, "inputColor");
     glUniform4f(colorLoc, obj->color.x, obj->color.y, obj->color.z, obj->color.w);
+
+    if (obj->object.useTexture) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, obj->object.textureID);
+    }
 
     switch (obj->object.type) {
     case OBJ_CUBE:

@@ -72,7 +72,7 @@ void main() {
 
     // Compute lighting or return the color directly if no shading is required
     if (noShading || !useLighting) {
-        FragColor = vec4(baseColor, 1.0);
+        FragColor = vec4(baseColor, 0.5);
     } else {
         vec3 lightingResult = calculateLighting(norm, viewDir, baseColor, 0.0, 1.0, 1.0);
         FragColor = vec4(lightingResult, 1.0);

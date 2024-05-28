@@ -156,10 +156,8 @@ void handleToggleInput(int key, bool* pressedFlag, bool* toggleFlag, const char*
 
 void handleObjectCreation(int key, bool* pressedFlag, ObjectType objType) {
     if (glfwGetKey(screen.window, key) == GLFW_PRESS && !(*pressedFlag)) {
-        PBRMaterial* material = getMaterial("peacockOre");
-        if (material) {
-            addObject(&camera, objType, texturesEnabled, textureIndex, colorsEnabled, NULL, *material, true);
-        }
+        PBRMaterial defaultMaterial = { 0 }; // Initialize material to zero
+        addObject(&camera, objType, false, -1, true, NULL, defaultMaterial, false); // No texture by default
         *pressedFlag = true;
     }
     else if (glfwGetKey(screen.window, key) == GLFW_RELEASE) {
@@ -167,9 +165,48 @@ void handleObjectCreation(int key, bool* pressedFlag, ObjectType objType) {
     }
 }
 
+
 void render_scene(const Matrix4x4 viewMatrix, const Matrix4x4 projMatrix) {
     for (int i = 0; i < objectManager.count; i++) {
         drawObject(&objectManager.objects[i], viewMatrix, projMatrix);
+    }
+}
+
+float distanceFromCamera(SceneObject* obj) {
+    Vector3 diff = vector_sub(camera.Position, obj->position);
+    return vector_length(diff);
+}
+
+int compareObjects(const void* a, const void* b) {
+    SceneObject* objA = *(SceneObject**)a;
+    SceneObject* objB = *(SceneObject**)b;
+    float distanceA = vector_length(vector_sub(camera.Position, objA->position));
+    float distanceB = vector_length(vector_sub(camera.Position, objB->position));
+    return (distanceA < distanceB) - (distanceA > distanceB); // Sort descending
+}
+
+void setShaderUniforms(SceneObject* obj) {
+    glUseProgram(shaderProgram);
+    GLint useTextureLoc = glGetUniformLocation(shaderProgram, "useTexture");
+    GLint usePBRLoc = glGetUniformLocation(shaderProgram, "usePBR");
+    GLint useColorLoc = glGetUniformLocation(shaderProgram, "useColor");
+    GLint colorLoc = glGetUniformLocation(shaderProgram, "inputColor");
+
+    // Set texture usage
+    glUniform1i(useTextureLoc, texturesEnabled && obj->object.useTexture && !obj->object.usePBR);
+    // Set PBR usage
+    glUniform1i(usePBRLoc, usePBR && obj->object.usePBR);
+    // Set color usage
+    glUniform1i(useColorLoc, colorsEnabled && obj->object.useColor);
+    // Set input color
+    glUniform4f(colorLoc, obj->color.x, obj->color.y, obj->color.z, obj->color.w);
+
+    if (obj->object.useTexture && texturesEnabled) {
+        glBindTexture(GL_TEXTURE_2D, obj->object.textureID);
+    }
+
+    if (usePBR && obj->object.usePBR) {
+        bindPBRMaterial(obj->object.material);
     }
 }
 
@@ -198,40 +235,45 @@ void render() {
     glUniform1i(glGetUniformLocation(shaderProgram, "useLighting"), lightingEnabled);
     glUniform1i(glGetUniformLocation(shaderProgram, "noShading"), !lightingEnabled);
 
-    // Group rendering by state changes
+    // Enable depth testing
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+    // Separate objects into opaque and transparent lists
+    SceneObject* opaqueObjects[MAX_OBJECTS];
+    SceneObject* transparentObjects[MAX_OBJECTS];
+    int opaqueCount = 0;
+    int transparentCount = 0;
+
     for (int i = 0; i < objectManager.count; i++) {
-        SceneObject* sceneObj = &objectManager.objects[i];
-
-        glUniform1i(glGetUniformLocation(shaderProgram, "useTexture"), texturesEnabled && sceneObj->object.useTexture && !sceneObj->object.usePBR);
-        glUniform1i(glGetUniformLocation(shaderProgram, "usePBR"), usePBR && sceneObj->object.usePBR);
-        glUniform1i(glGetUniformLocation(shaderProgram, "useColor"), colorsEnabled && sceneObj->object.useColor);
-        GLint colorLoc = glGetUniformLocation(shaderProgram, "inputColor");
-        glUniform4f(colorLoc, sceneObj->color.x, sceneObj->color.y, sceneObj->color.z, sceneObj->color.w);
-
-        if (sceneObj->object.useTexture && texturesEnabled) {
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        SceneObject* obj = &objectManager.objects[i];
+        if (obj->color.w < 1.0f) {
+            transparentObjects[transparentCount++] = obj;
         }
         else {
-            glDisable(GL_BLEND); // Ensure blending is disabled if not using textures
-        }
-
-        if (usePBR && sceneObj->object.usePBR) {
-            bindPBRMaterial(sceneObj->object.material);
-        }
-        else if (sceneObj->object.useTexture && sceneObj->object.textureID >= 0) {
-            glBindTexture(GL_TEXTURE_2D, sceneObj->object.textureID);
-        }
-        else {
-            glBindTexture(GL_TEXTURE_2D, 0);
-        }
-
-        drawObject(sceneObj, viewMatrix, projMatrix);
-
-        if (sceneObj->object.useTexture && texturesEnabled) {
-            glDisable(GL_BLEND);
+            opaqueObjects[opaqueCount++] = obj;
         }
     }
+
+    // Sort transparent objects by distance from the camera (farthest first)
+    qsort(transparentObjects, transparentCount, sizeof(SceneObject*), compareObjects);
+
+    // Render opaque objects first
+    for (int i = 0; i < opaqueCount; i++) {
+        SceneObject* obj = opaqueObjects[i];
+        setShaderUniforms(obj);
+        drawObject(obj, viewMatrix, projMatrix);
+    }
+
+    // Render transparent objects last
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    for (int i = 0; i < transparentCount; i++) {
+        SceneObject* obj = transparentObjects[i];
+        setShaderUniforms(obj);
+        drawObject(obj, viewMatrix, projMatrix);
+    }
+    glDisable(GL_BLEND);
 
     // Draw model's meshes if loaded
     if (model) {

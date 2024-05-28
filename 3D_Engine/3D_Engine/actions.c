@@ -4,6 +4,7 @@
 #include "globals.h"
 #include "SceneObject.h"
 #include "ModelLoad.h"
+#include <string.h>
 
 // Define the stacks for undo and redo
 Action undoStack[MAX_ACTIONS];
@@ -26,7 +27,7 @@ Action popUndoAction() {
     if (undoTop >= 0) {
         return undoStack[undoTop--];
     }
-    return (Action){ .type = -1 };
+    return (Action) { .type = -1 };
 }
 
 void pushRedoAction(Action action) {
@@ -39,7 +40,7 @@ Action popRedoAction() {
     if (redoTop >= 0) {
         return redoStack[redoTop--];
     }
-    return (Action){ .type = -1 };
+    return (Action) { .type = -1 };
 }
 
 void addToHistory(Action action) {
