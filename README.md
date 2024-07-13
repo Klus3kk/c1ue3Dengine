@@ -33,7 +33,7 @@
 </details>
 
 ## Overview
-C1ue Engine is a 3D rendering engine developed for creating and managing 3D objects and scenes. This engine leverages OpenGL for rendering, GLFW for window management, and Nuklear for the graphical user interface. It supports a wide range of features including various object types, texture management, PBR materials, camera control, and real-time rendering. :smile:
+C1ue Engine is a 3D rendering engine developed for creating and managing 3D objects and scenes. This engine leverages OpenGL for rendering, GLFW for window management, and Nuklear for the graphical user interface. It supports a wide range of features including various object types, texture management, PBR materials, camera control, and real-time rendering.
 
 ### Features
 * Rendering: Utilizes OpenGL for efficient rendering of 3D objects.
