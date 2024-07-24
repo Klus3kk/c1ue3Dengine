@@ -1,4 +1,4 @@
-# C1ue Engine (3D Engine in C)
+# C1ue 3D Engine 
 <details>
   <summary>Table of Contents</summary>
   <ol>
