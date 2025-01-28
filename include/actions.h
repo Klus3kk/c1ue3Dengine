@@ -1,5 +1,3 @@
-// actions.h
-
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
@@ -39,4 +37,4 @@ void transformObjectWithAction(int index, Vector3 position, Vector3 rotation, Ve
 void changeColorWithAction(int index, Vector4 color);
 void toggleOptionWithAction(const char* optionName, bool newValue);
 
-#endif // ACTIONS_H
+#endif 

@@ -40,4 +40,4 @@ Matrix4x4 perspective(float fov, float aspect, float znear, float zfar);
 Matrix4x4 rotateMatrix(float angle, Vector3 axis);
 Matrix4x4 scaleMatrix(Vector3 scale);
 Matrix4x4 identityMatrix();
-#endif // CAMERA_H
+#endif 

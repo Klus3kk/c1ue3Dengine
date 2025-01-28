@@ -37,7 +37,3 @@ int main(void) {
     end();  // Clean up OpenGL and other resources
     return 0;
 }
-
-
-
-

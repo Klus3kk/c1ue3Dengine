@@ -1,108 +1,104 @@
 # ClueEngine
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#overview">About The Project</a>
-      <ul>
-        <li><a href="#features">Features</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#usage">Usage</a>
-      <ul>
-        <li><a href="#camera_controls">Camera Controls</a></li>
-        <li><a href="#object_management">Object Management</a></li>
-        <li><a href="#other_controls">Other Controls</a></li>
-        <li><a href="#gui_controls">GUI Controls</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#modules">Modules</a>
-      <ul>
-        <li><a href="#rendering">Rendering</a></li>
-        <li><a href="#materials_and_textures">Materials and Textures</a></li>
-        <li><a href="#model_loading">Model Loading</a></li>
-        <li><a href="#object_management">Object Management</a></li>
-        <li><a href="#camera_and_vectors">Camera and Vectors</a></li>
-        <li><a href="#resource_loading">Resource Loading</a></li>
-        <li><a href="#user_interface">User Interface</a></li>
-      </ul>
-      <a href="#photo">Example usage of the Engine</a>
-  </ol>
-</details>
 
-## Overview
-ClueEngine is a 3D rendering engine developed for creating and managing 3D objects and scenes. The engine leverages OpenGL for rendering, GLFW for window management, and Nuklear for the graphical user interface. It supports a wide range of features including various object types, texture management, PBR materials, camera control, and real-time rendering
+**ClueEngine** is a cutting-edge 3D graphics engine developed using **C**, focusing on simplicity and extensibility for 3D rendering applications. With real-time **OpenGL** rendering, dynamic **PBR materials**, lighting, object management, and a powerful GUI, ClueEngine is ideal for creating 3D games and simulations. The engine is designed to be modular, with customizable features for efficient development and ease of integration.
 
-### Features
-* Rendering: Utilizes OpenGL for efficient rendering of 3D objects.
-* Materials and Textures: Supports PBR materials and texture management.
-* Model Loading: Capable of loading and rendering 3D models.
-* Object Management: Handles creation, updating, and deletion of 3D objects in the scene.
-* Camera Control: Provides camera manipulation for navigating the 3D space.
-* Graphical User Interface: Integrates Nuklear for GUI elements.
-* File Operations: Supports saving and loading game states, logging, and configuration settings.
+## About
 
-## Usage
+ClueEngine is built to provide developers with the tools necessary to easily manage 3D scenes, manipulate objects, and handle real-time rendering. It offers seamless **camera movement**, **texture management**, and an intuitive **user interface** for designing and interacting with 3D worlds.
 
-### Camera Controls
-* W/A/S/D: Move forward/left/backward/right
-* Space: Move up
-* Left Shift: Move down
-* Mouse Movement: Look around
-* Right Click: Pan camera (while engine is paused)
-* Left Click + Alt: Drag camera (while engine is paused)
+This engine can be used for creating interactive applications, games, or simulations that require rich 3D rendering.
+
+### Key Features
+
+- **Real-Time Rendering**: Powered by **OpenGL**, supporting 3D object rendering with detailed lighting and shading.
+- **PBR Materials**: The engine includes support for **Physically-Based Rendering** materials, ensuring realistic textures and effects.
+- **Camera Control**: Fully functional **camera controls** for smooth navigation and user interaction.
+- **GUI Integration**: A built-in **Nuklear GUI** for managing settings, controls, and object interactions.
+- **Lighting and Shadows**: Advanced light sources including **Point Light**, **Directional Light**, and **Spotlight**.
+
+## Quick Start
+
+Here’s how you can quickly set up and get started with **ClueEngine**.
+
+1. **Clone the repository**
+
+    ```bash
+    git clone https://github.com/Klus3kk/ClueEngine.git
+    ```
+
+2. **Install dependencies**:
+    Refer to the [installation guide](docs/setup.md) for detailed steps.
+
+3. **Build the project**:
+
+    Navigate to the project directory and run:
+
+    ```bash
+    cmake . -Bbuild
+    cmake --build build
+    ```
+
+4. **Run the engine**:
+    Once built, you can run the engine executable.
+
+    ```bash
+    ./build/ClueEngine
+    ```
+
+5. **Modify or create your own scene**:
+    Use the **GUI** controls to add objects, adjust materials, and set up lights.
+
+---
+
+## Installation
+
+### Dependencies
+
+- **GLFW**: For window management and input handling.
+- **GLAD**: For OpenGL function loading.
+- **Nuklear**: For the graphical user interface (GUI).
+- **SOIL2**: For loading textures.
+
+### Build the Engine
+
+1. **Ensure required libraries** are installed:
+   - GLFW, GLAD, Nuklear, SOIL2
+2. **Run the build commands** as outlined in the Quick Start section.
+
+## How the Engine Works
+
+**ClueEngine** is based on several core modules that interact seamlessly to render objects and handle input. The main components include:
 
 ### Object Management
-* O: Create a plane
-* C: Create a cube
-* H: Create a pyramid
-* K: Create a sphere
-* B: Create a cylinder
-* I: Create light
 
-### Other Controls
-* T: Toggle textures
-* L: Toggle colors
-* J: Toggle shading
-* Q: Toggle PBR materials
-* P: Pause/Resume engine
-* E: Exit the engine
+- Objects are created using various shapes (cube, sphere, pyramid, etc.).
+- Objects can be modified by changing their **position**, **rotation**, and **scale** dynamically.
+- Support for creating models and applying **PBR materials**.
 
-### GUI Controls
-* F1: Change the light/dark theme
-* F: Toggle fullscreen
-* Ctrl + Z: Undo the action
-* Ctrl + Y: Redo the action
-* Ctrl + X: Cut the selected object
-* Ctrl + C: Copy the selected object
-* Ctrl + V: Paste the object
-* Delete: Delete the object (for the selected object in hierarchy window)
+### Camera and Controls
 
+- **First-Person Camera**: Navigate the 3D space using the **WASD** keys and **mouse**.
+- **Camera Zooming and Panning**: Using the mouse and keyboard, zoom in/out and pan across the scene.
   
-## Modules
-### Rendering:
-* rendering.c
-* shaders.c
-### Materials and Textures:
-* materials.c
-* textures.c
-### Model Loading:
-* ModelLoad.c
-### Object Management:
-* ObjectManager.c
-### Camera and Vectors:
-* Camera.c
-* Vectors.c
-### Resource Loading:
-* resource_loader.c
-### User Interface:
-* gui.c
+### Rendering Pipeline
 
-## Photo
+- **Shaders**: Vertex and fragment shaders are used for rendering objects with different material properties.
+- **Textures and Materials**: The engine supports both **basic textures** and **PBR materials**, allowing for detailed and realistic object surfaces.
 
-<p align="center">
-  <img width="1280" height="480" src="https://github.com/Klus3kk/3D-Engine-in-C/assets/93116510/5d7d7ee0-69e4-47eb-b4dd-53081c3f799c">
-</p>
+### User Interface
 
+- **Nuklear** is used to render the engine's GUI, allowing easy control over object properties, scene settings, and debug information.
+
+## Documentation Folder (docs)
+
+The **docs** folder contains detailed explanations of specific aspects of **ClueEngine**:
+
+1. **Setup.md**: A comprehensive guide on how to set up the engine and all necessary dependencies.
+2. **EngineArchitecture.md**: An in-depth look at the engine's architecture, how the different modules interact, and the underlying design principles.
+3. **RenderingPipeline.md**: Detailed documentation on how the rendering pipeline works, including shaders, materials, and texture loading.
+4. **UserGuide.md**: A practical guide to using the engine, including how to create scenes, manipulate objects, and use the GUI.
+5. **ExtendingTheEngine.md**: A guide on how to extend the engine, adding new features, object types, or custom shaders.
+
+## License
+
+ClueEngine is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
