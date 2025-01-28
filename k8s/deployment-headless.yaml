@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clueengine-headless
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clueengine-headless
+  template:
+    metadata:
+      labels:
+        app: clueengine-headless
+    spec:
+      containers:
+      - name: clueengine-headless
+        image: Klus3kk/clueengine:latest
+        command: ["/bin/bash", "-c", "./ClueEngine --headless"]
+        resources:
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+        volumeMounts:
+        - mountPath: /app/shaders
+          name: shaders-volume
+        - mountPath: /app/resources
+          name: resources-volume
+      volumes:
+      - name: shaders-volume
+        hostPath:
+          path: /mnt/data/shaders
+      - name: resources-volume
+        hostPath:
+          path: /mnt/data/resources

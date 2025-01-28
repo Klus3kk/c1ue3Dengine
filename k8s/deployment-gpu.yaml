@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clue3d-gpu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clueengine-gpu
+  template:
+    metadata:
+      labels:
+        app: clueengine-gpu
+    spec:
+      runtimeClassName: nvidia
+      containers:
+      - name: clueengine-gpu
+        image: Klus3kk/clueengine:latest
+        command: ["/bin/bash", "-c", "./ClueEngine"]
+        env:
+        - name: DISPLAY
+          value: ":0"
+        securityContext:
+          privileged: true
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+        volumeMounts:
+        - mountPath: /tmp/.X11-unix
+          name: x11-socket
+        - mountPath: /app/shaders
+          name: shaders-volume
+        - mountPath: /app/resources
+          name: resources-volume
+      volumes:
+      - name: x11-socket
+        hostPath:
+          path: /tmp/.X11-unix
+      - name: shaders-volume
+        hostPath:
+          path: /mnt/data/shaders
+      - name: resources-volume
+        hostPath:
+          path: /mnt/data/resources
