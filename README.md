@@ -48,8 +48,6 @@ Here’s how you can quickly set up and get started with **ClueEngine**.
 5. **Modify or create your own scene**:
     Use the **GUI** controls to add objects, adjust materials, and set up lights.
 
----
-
 ## Installation
 
 ### Dependencies
