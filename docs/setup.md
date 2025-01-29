@@ -101,4 +101,4 @@ This command will start the container and run **ClueEngine** within the isolated
 
 ## Next Steps
 
-After successfully building and running **ClueEngine**, you can start creating your 3D scenes! Refer to the [User Guide](docs/UserGuide.md) for instructions on how to create and manage objects, materials, lights, and more.
+After successfully building and running **ClueEngine**, you can start creating your 3D scenes! Refer to the [User Guide](docs/userguide.md) for instructions on how to create and manage objects, materials, lights, and more.
