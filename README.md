@@ -95,7 +95,7 @@ The **docs** folder contains detailed explanations of specific aspects of **Clue
 2. [enginearchitecture.md](docs/enginearchitecture.md): An in-depth look at the engine's architecture, how the different modules interact, and the underlying design principles.
 3. [renderingpipeline.md](docs/renderingpipeline.md): Detailed documentation on how the rendering pipeline works, including shaders, materials, and texture loading.
 4. [userguide.md](docs/userguide.md): A practical guide to using the engine, including how to create scenes, manipulate objects, and use the GUI.
-5. [extendingthengine.md](docs/extendingthengine.md): A future plan with new plans for extending the engine, adding new features, object types, custom shaders etc.
+5. [extendingtheengine.md](docs/extendingthengine.md): A future plan with new plans for extending the engine, adding new features, object types, custom shaders etc.
 
 ## License
 
