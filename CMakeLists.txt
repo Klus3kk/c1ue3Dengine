@@ -35,7 +35,7 @@ find_package(OpenGL REQUIRED)
 # Fetch External Dependencies
 include(FetchContent)
 
-# Fetch and build cJSON
+# ✅ Fetch and build cJSON
 FetchContent_Declare(
   cjson
   GIT_REPOSITORY https://github.com/DaveGamble/cJSON.git
@@ -48,7 +48,7 @@ if(NOT cjson_POPULATED)
 endif()
 include_directories(${cjson_SOURCE_DIR})
 
-# Fetch and build tinyfiledialogs
+# ✅ Fetch and build tinyfiledialogs
 FetchContent_Declare(
   tinyfiledialogs
   GIT_REPOSITORY https://github.com/native-toolkit/tinyfiledialogs.git
@@ -78,7 +78,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(soil2)
 include_directories(${soil2_SOURCE_DIR}/src)
 
-# Find GLFW
+# Find GLFW (Separate for Windows & Linux/macOS)
 if (PLATFORM_LINUX OR PLATFORM_MACOS)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(GLFW QUIET glfw3)
@@ -99,7 +99,7 @@ if (PLATFORM_LINUX OR PLATFORM_MACOS)
     endif()
 endif()
 
-# Find GLEW
+# Find GLEW (Separate for Windows & Linux/macOS)
 if (PLATFORM_WINDOWS)
     include_directories(${CMAKE_SOURCE_DIR}/include) # Windows uses prebuilt GLEW
 else()
@@ -117,10 +117,10 @@ include_directories(
 file(GLOB_RECURSE SOURCES src/*.c src/*.cpp)
 file(GLOB_RECURSE HEADERS include/*.h include/*.hpp)
 
-# Ensure `add_executable` is declared BEFORE linking libraries
+# ✅ Ensure `add_executable` is declared BEFORE linking libraries
 add_executable(ClueEngine ${SOURCES} ${HEADERS})
 
-# Properly link libraries
+# 🔥 Properly link libraries for **each platform**
 if (PLATFORM_WINDOWS)
     target_link_libraries(ClueEngine
         OpenGL::GL
