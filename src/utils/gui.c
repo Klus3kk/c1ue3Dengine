@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <float.h>
 #include <stdbool.h>
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 // Assimp headers
 #include <assimp/scene.h>
@@ -27,10 +27,11 @@
 #include "nuklear/nuklear_glfw_gl3.h"
 
 // Project headers
-#include "gui.h"
 #include "globals.h"
+#include "gui.h"
 #include "ObjectManager.h"
 #include "resource_loader.h"
+#include "rendering.h"
 #include "textures.h"
 #include "lightshading.h"
 #include "file_operations.h"
@@ -44,6 +45,7 @@ static bool show_material_window = false;
 static bool show_texture_window = false;
 static SceneObject* material_window_obj = NULL;
 static SceneObject* texture_window_obj = NULL;
+extern SceneObject* selected_object;
 
 SceneObject* clipboard_object = NULL; // Clipboard for cut/copy/paste
 GLuint textureColorbuffer; // External linkage to the texture from rendering.c
@@ -60,7 +62,8 @@ bool isCutOperation = false;
 bool show_controls = false;
 bool show_object_creator = false;
 bool show_color_picker = false;
-struct nk_context* ctx;
+static struct nk_glfw glfw = {0};
+struct nk_context *ctx = NULL;  // Global context initialization
 struct nk_font* roboto_font;
 bool show_change_background = false;
 
@@ -453,8 +456,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 // Display loading screen function
-void display_loading_screen(struct nk_context* ctx, const char* stage, float progress) {
-    nk_glfw3_new_frame();
+void display_loading_screen(const char* stage, float progress) {
+    nk_glfw3_new_frame();  // Start Nuklear frame
 
     int window_width, window_height;
     glfwGetWindowSize(window, &window_width, &window_height);
@@ -462,15 +465,13 @@ void display_loading_screen(struct nk_context* ctx, const char* stage, float pro
     char loading_text[256];
     snprintf(loading_text, sizeof(loading_text), "%s", stage);
 
-    if (nk_begin(ctx, "Loading", nk_rect((window_width - 400) / 2, (window_height - 200) / 2, 400, 200), NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_NO_INPUT)) {
+    if (nk_begin(ctx, "Loading", nk_rect((window_width - 400) / 2, (window_height - 200) / 2, 400, 200), 
+                 NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_NO_INPUT)) {
         nk_layout_row_dynamic(ctx, 30, 1);
         nk_label(ctx, loading_text, NK_TEXT_CENTERED);
 
         nk_layout_row_dynamic(ctx, 30, 1);
-        struct nk_rect progress_bar = nk_widget_bounds(ctx);
-        nk_fill_rect(&ctx->current->buffer, progress_bar, 0, nk_rgb(60, 60, 60));
-        progress_bar.w = (progress_bar.w * progress);
-        nk_fill_rect(&ctx->current->buffer, progress_bar, 0, nk_rgb(150, 150, 150));
+        nk_progress(ctx, (nk_size*)&progress, 100, NK_FIXED);
     }
     nk_end(ctx);
 
@@ -479,8 +480,14 @@ void display_loading_screen(struct nk_context* ctx, const char* stage, float pro
     glfwPollEvents();
 }
 
+void generate_new_frame() {
+    nk_glfw3_new_frame(); 
+}
+
 // Run loading screen function
-void run_loading_screen(GLFWwindow* window, struct nk_context* ctx) {
+void run_loading_screen(GLFWwindow* window) {
+    if (!ctx) return;  // Ensure Nuklear is initialized
+
     const char* stages[] = {
         "Initializing...",
         "Loading Textures...",
@@ -497,10 +504,11 @@ void run_loading_screen(GLFWwindow* window, struct nk_context* ctx) {
         printf("Stage: %s, Progress: %.2f%%\n", stages[i], progress * 100);
         loadResources(i, &progress);
         progress += progressIncrement;
-        display_loading_screen(ctx, stages[i], progress); 
+        display_loading_screen(stages[i], progress);  // FIX: Remove `ctx`
     }
-    display_loading_screen(ctx, "Loading Complete", 1.0f);
+    display_loading_screen("Loading Complete", 1.0f);
 }
+
 
 void select_object(int index) {
     if (index >= 0 && index < objectManager.count) {
@@ -687,8 +695,9 @@ void show_about_window(struct nk_context* ctx) {
     float about_height = 200; 
     if (nk_begin(ctx, "About", nk_rect((windowed_width - about_width) / 2, (windowed_height - about_height) / 2, about_width, about_height), NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_CLOSABLE)) {
         nk_layout_row_static(ctx, 20, 180, 1);
-        nk_label(ctx, "3D Engine v.1.0.0", NK_TEXT_CENTERED);
+        nk_label(ctx, "C1ue Engine v1.1.0", NK_TEXT_CENTERED);
         nk_label(ctx, "Made by ClueSec", NK_TEXT_CENTERED);
+        nk_label(ctx, "=== ClueSec 2024-2025 ===", NK_TEXT_CENTERED);
         nk_end(ctx);
     }
     else {
@@ -1142,3 +1151,5 @@ void teardown_nuklear() {
 void render_nuklear() {
     nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 }
+
+

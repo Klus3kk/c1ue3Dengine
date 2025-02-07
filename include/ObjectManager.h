@@ -1,14 +1,14 @@
 #ifndef OBJECT_MANAGER_H
 #define OBJECT_MANAGER_H
 
-#include "3DObjects.h"
-#include "Camera.h"
-#include "materials.h"
 #include <stdbool.h>
+#include "Camera.h"
+#include "3DObjects.h"
+#include "materials.h"
 #include "Vectors.h"
 #include "SceneObject.h"
 
-#define MAX_OBJECTS 1000
+#define MAX_OBJECTS 1000 
 
 typedef struct {
     SceneObject objects[MAX_OBJECTS];

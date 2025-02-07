@@ -5,25 +5,27 @@
 #include <stdio.h>
 #include "Vectors.h"
 #include "Screen.h"
-#include <Windows.h>
+
+#ifdef _WIN32
+    #include <Windows.h> // Windows-specific
+#else
+    #include <stdlib.h>  // Standard library for Linux/macOS
+#endif
+
+// Forward declaration to break circular dependency
+struct SceneObject;
+struct nk_context;
+// Nuklear GUI context
+extern struct SceneObject* selected_object;
+extern struct nk_context* ctx;
+
 #include "loading.h"
 #include "ModelLoad.h"
 #include "Camera.h"
-#include "ObjectManager.h"
+#include "types.h"
 #include "gui.h"
-#define MAX_OBJECTS 250
 
-typedef enum {
-    SELECT_NONE,
-    SELECT_CUBE,
-    SELECT_SPHERE,
-    SELECT_PYRAMID,
-    SELECT_CYLINDER,
-    SELECT_PLANE,
-    SELECT_MODEL
-} SelectedType;
-
-extern SelectedType selectedType;
+#define MAX_OBJECTS 1000
 
 // Screen and rendering
 extern Screen screen;
@@ -60,13 +62,13 @@ extern bool usePBR;
 extern bool pbrTogglePressed;
 extern bool backgroundEnabled;
 extern bool cameraEnabled;
-// Nuklear GUI context
-extern SceneObject* selected_object;
-extern struct nk_context* ctx;
+
+// Model and rendering data
 extern Model* loadedModel;
 extern Mesh* loadedModelMesh;
 extern bool show_color_picker;
 extern bool show_inspector;
 extern bool show_change_texture;
 extern bool show_change_material;
+
 #endif 

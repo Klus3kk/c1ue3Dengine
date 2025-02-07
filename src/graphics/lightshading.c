@@ -1,7 +1,10 @@
 #include "lightshading.h"
-#include <glad/glad.h>
+#include <glad/glad.h>  
+#include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
+
 #define PI 3.14159265358979323846
 #define DEG_TO_RAD(degrees) ((degrees) * (PI / 180.0))
 extern unsigned int shaderProgram;

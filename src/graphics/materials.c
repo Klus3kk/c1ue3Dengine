@@ -98,7 +98,7 @@ void addMaterial(const char* name, PBRMaterial material) {
         fprintf(stderr, "Max materials limit reached.\n");
         return;
     }
-    materialNames[materialCount] = _strdup(name);  
+    materialNames[materialCount] = strdup(name);  
     materials[materialCount] = material;
     materialCount++;
     printf("Material %s added successfully.\n", name);

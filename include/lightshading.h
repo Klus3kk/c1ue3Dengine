@@ -25,6 +25,7 @@ extern Light lights[MAX_LIGHTS];
 extern int lightCount;
 
 void initLightingSystem();
+void updateShaderLights();
 void addLight(Light newLight);
 void updateLight(int index, Light updatedLight);
 void removeLight(int index);

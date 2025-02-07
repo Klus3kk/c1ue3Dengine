@@ -1,6 +1,10 @@
+#include <glad/glad.h> 
+#include <GLFW/glfw3.h>
+#include "globals.h"
+#include "ModelLoad.h"
+#include "rendering.h"
 #include "ObjectManager.h"
 #include "Camera.h"
-#include "globals.h"
 #include "Vectors.h"
 #include "materials.h"
 #include "textures.h"
@@ -150,13 +154,8 @@ void cleanupObjects() {
 void updateObjectInManager(SceneObject* updatedObject) {
     for (int i = 0; i < objectManager.count; i++) {
         if (objectManager.objects[i].id == updatedObject->id) {
-            // Directly update the properties of the object
-            objectManager.objects[i].object = updatedObject->object;
-            objectManager.objects[i].position = updatedObject->position;
-            objectManager.objects[i].rotation = updatedObject->rotation;
-            objectManager.objects[i].scale = updatedObject->scale;
-            objectManager.objects[i].color = updatedObject->color;
-            objectManager.objects[i].selected = updatedObject->selected;
+            objectManager.objects[i] = *updatedObject;
+
 
             printf("Updated object in manager: ID=%d, Index=%d\n", updatedObject->id, i);
 

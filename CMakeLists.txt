@@ -1,7 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.16)
 project(ClueEngine)
 
-# Set C standard and C++ standard
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -14,23 +13,84 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(PLATFORM_LINUX TRUE)
 endif()
 
-# Set output directories globally
+# Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 
-# Setting applies to all configurations (Windows, Linux, MacOS)
-if (CMAKE_CONFIGURATION_TYPES) # Multi-config generators (Visual Studio)
-    foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
-        string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG_UPPER)
-        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER} ${CMAKE_SOURCE_DIR}/bin)
-    endforeach()
-else() # Single-config generators (Makefile, Ninja)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-endif()
-
 # Find OpenGL
 find_package(OpenGL REQUIRED)
+
+# Find GLFW
+if (PLATFORM_LINUX OR PLATFORM_MACOS)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GLFW QUIET glfw3)
+    if (NOT GLFW_FOUND)
+        find_package(glfw3 CONFIG QUIET)
+    endif()
+    if (NOT GLFW_FOUND)
+        find_path(GLFW_INCLUDE_DIR NAMES GLFW/glfw3.h PATHS /usr/include /usr/local/include)
+        find_library(GLFW_LIBRARY NAMES glfw glfw3 PATHS /usr/lib /usr/local/lib)
+        if (GLFW_INCLUDE_DIR AND GLFW_LIBRARY)
+            set(GLFW_FOUND TRUE)
+            set(GLFW_LIBRARIES ${GLFW_LIBRARY})
+            include_directories(${GLFW_INCLUDE_DIR})
+        endif()
+    endif()
+    if (NOT GLFW_FOUND)
+        message(FATAL_ERROR "GLFW3 not found. Install it with your package manager.")
+    endif()
+endif()
+
+# Find GLEW
+find_package(GLEW REQUIRED)
+include_directories(${GLEW_INCLUDE_DIRS})
+
+# Fetch External Dependencies
+include(FetchContent)
+
+# ✅ Properly fetch and build cJSON
+FetchContent_Declare(
+  cjson
+  GIT_REPOSITORY https://github.com/DaveGamble/cJSON.git
+  GIT_TAG        master
+)
+FetchContent_GetProperties(cjson)
+if(NOT cjson_POPULATED)
+    FetchContent_Populate(cjson)
+    add_subdirectory(${cjson_SOURCE_DIR} ${cjson_BINARY_DIR})
+endif()
+include_directories(${cjson_SOURCE_DIR})
+
+# ✅ Properly fetch and build tinyfiledialogs
+FetchContent_Declare(
+  tinyfiledialogs
+  GIT_REPOSITORY https://github.com/native-toolkit/tinyfiledialogs.git
+  GIT_TAG        master
+)
+FetchContent_GetProperties(tinyfiledialogs)
+if(NOT tinyfiledialogs_POPULATED)
+    FetchContent_Populate(tinyfiledialogs)
+    add_library(tinyfiledialogs STATIC ${tinyfiledialogs_SOURCE_DIR}/tinyfiledialogs.c)
+endif()
+include_directories(${tinyfiledialogs_SOURCE_DIR})
+
+# Assimp (3D Model Loader)
+FetchContent_Declare(
+  assimp
+  GIT_REPOSITORY https://github.com/assimp/assimp.git
+  GIT_TAG        master
+)
+FetchContent_MakeAvailable(assimp)
+
+# SOIL2 (Image Loader)
+FetchContent_Declare(
+  soil2
+  GIT_REPOSITORY https://github.com/SpartanJ/soil2.git
+  GIT_TAG        master
+)
+FetchContent_MakeAvailable(soil2)
+include_directories(${soil2_SOURCE_DIR}/src)
 
 # Include directories
 include_directories(
@@ -42,11 +102,10 @@ include_directories(
 file(GLOB_RECURSE SOURCES src/*.c src/*.cpp)
 file(GLOB_RECURSE HEADERS include/*.h include/*.hpp)
 
-# Add the executable
+# ✅ Ensure `add_executable` is declared BEFORE linking libraries
 add_executable(ClueEngine ${SOURCES} ${HEADERS})
-add_compile_options(/W0)
 
-# Link libraries based on OS
+# 🔥 Fix: Properly link libraries
 if (PLATFORM_WINDOWS)
     target_link_libraries(ClueEngine
         OpenGL::GL
@@ -55,42 +114,21 @@ if (PLATFORM_WINDOWS)
         ${CMAKE_SOURCE_DIR}/lib/assimp-vc143-mtd.lib
         ${CMAKE_SOURCE_DIR}/lib/ode_doubled.lib
         ${CMAKE_SOURCE_DIR}/lib/soil2.lib
-        ${CMAKE_SOURCE_DIR}/lib/cjson.lib
-        ${CMAKE_SOURCE_DIR}/lib/tinyfiledialogs32.lib
-        ${CMAKE_SOURCE_DIR}/lib/tinyfiledialogs64.lib
+        cjson  # ✅ Fix: Properly link cJSON
+        tinyfiledialogs  # ✅ Fix: Properly link tinyfiledialogs
     )
-elseif (PLATFORM_MACOS)
-    find_library(COCOA_FRAMEWORK Cocoa)
-    find_library(IOKIT_FRAMEWORK IOKit)
-    find_library(COREVIDEO_FRAMEWORK CoreVideo)
+elseif (PLATFORM_MACOS OR PLATFORM_LINUX)
     target_link_libraries(ClueEngine
         OpenGL::GL
-        glfw
-        GLEW
+        ${GLFW_LIBRARIES}
+        ${GLEW_LIBRARY}
         assimp
-        ${COCOA_FRAMEWORK}
-        ${IOKIT_FRAMEWORK}
-        ${COREVIDEO_FRAMEWORK}
-    )
-elseif (PLATFORM_LINUX)
-    find_package(glfw3 REQUIRED)
-    find_package(GLEW REQUIRED)
-    find_package(assimp REQUIRED)
-    target_link_libraries(ClueEngine
-        OpenGL::GL
-        glfw
-        GLEW
-        assimp
+        soil2
+        cjson  # ✅ Fix: Properly link cJSON
+        tinyfiledialogs  # ✅ Fix: Properly link tinyfiledialogs
+        m  # Ensure math functions work (cosf, sinf, sqrt)
         pthread
         dl
-    )
-endif()
-
-# Copy DLLs (Windows only)
-if (PLATFORM_WINDOWS)
-    add_custom_command(TARGET ClueEngine POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/external ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
     )
 endif()
 
@@ -99,16 +137,10 @@ add_custom_command(TARGET ClueEngine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/shaders ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/shaders
 )
-
 add_custom_command(TARGET ClueEngine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources
 )
-
-# Set working directory in Visual Studio
-if (PLATFORM_WINDOWS)
-    set_target_properties(ClueEngine PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
-endif()
 
 # Compiler settings
 if (MSVC)

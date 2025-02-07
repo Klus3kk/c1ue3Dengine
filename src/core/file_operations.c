@@ -1,5 +1,6 @@
 #include "file_operations.h"
 #include "globals.h"
+#include "gui.h" 
 #include "Camera.h"
 #include "ObjectManager.h"
 #include "lightshading.h"

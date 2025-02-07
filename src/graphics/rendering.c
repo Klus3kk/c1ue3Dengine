@@ -44,7 +44,7 @@ void loadResources(int stage, float* progress) {
 }
 
 void setup() {
-    strcpy_s(screen.title, 100, "C1ue Engine v1.0.0");
+    strncpy(screen.title, "C1ue Engine v1.1.0", sizeof(screen.title) - 1);
 
     if (!glfwInit()) {
         fprintf(stderr, "Failed to initialize GLFW\n");
@@ -113,6 +113,9 @@ void setup() {
 
     // Disable face culling to ensure all faces are rendered
     glDisable(GL_CULL_FACE);
+
+        printf("OpenGL Version: %s\n", glGetString(GL_VERSION));
+    printf("GLSL Version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
 void drawMesh(const Mesh* mesh) {

@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <glad/glad.h>
-
+#include <glad/glad.h>  
+#include <GLFW/glfw3.h>
 // Function to read the content of a shader source file
 char* readFile(const char* filePath) {
     FILE* file = fopen(filePath, "rb");

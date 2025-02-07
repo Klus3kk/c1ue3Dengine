@@ -1,5 +1,6 @@
-#include "3DObjects.h"
 #include <glad/glad.h>  
+#include <GLFW/glfw3.h>
+#include "3DObjects.h"  
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -264,9 +265,11 @@ void drawSphere(const Sphere* sphere, Matrix4x4 viewMatrix, Matrix4x4 projMatrix
     int projLoc = glGetUniformLocation(shaderProgram, "projection");
 
     Matrix4x4 modelMatrix = translateMatrix(sphere->position);
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &modelMatrix.data[0]);
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &viewMatrix.data[0]);
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projMatrix.data[0]);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, (const GLfloat*)modelMatrix.data);
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (const GLfloat*)viewMatrix.data);
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, (const GLfloat*)projMatrix.data);
+
+
 
     GLint colorLoc = glGetUniformLocation(shaderProgram, "inputColor");
     glUniform4f(colorLoc, sphere->color.x, sphere->color.y, sphere->color.z, sphere->color.w);
@@ -380,9 +383,11 @@ void drawPyramid(const Pyramid* pyramid, Matrix4x4 viewMatrix, Matrix4x4 projMat
     Matrix4x4 adjustmentMatrix = translateMatrix((Vector3) { 0.0f, -0.5f, 0.0f });
     Matrix4x4 modelMatrix = matrixMultiply(translationMatrix, adjustmentMatrix);
 
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &modelMatrix.data[0]);
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &viewMatrix.data[0]);
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projMatrix.data[0]);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, (const GLfloat*)modelMatrix.data);
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (const GLfloat*)viewMatrix.data);
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, (const GLfloat*)projMatrix.data);
+
+
 
     // Set color
     GLint colorLoc = glGetUniformLocation(shaderProgram, "inputColor");

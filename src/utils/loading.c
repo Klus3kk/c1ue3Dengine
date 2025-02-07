@@ -1,8 +1,8 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "loading.h"
 #include "globals.h"
 #include "Vectors.h"
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
 
 void initLoadingScreen(GLFWwindow* window) {
     glfwMakeContextCurrent(window);

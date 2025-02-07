@@ -1,32 +1,21 @@
+#include <glad/glad.h>  
+#include <GLFW/glfw3.h>
 #include "Camera.h"
 #include "globals.h" 
 #include "ObjectManager.h" 
 #include "Vectors.h"
 #include "materials.h" 
-#include <GLFW/glfw3.h>
 #include <math.h>
 #include <stdlib.h>
 
-// Define the global camera variable
-Camera camera;
-#define M_PI 3.14159265358979323846
-#define FORWARD  1
-#define BACKWARD 2
-#define LEFT     3
-#define RIGHT    4
-#define SPACE    5
-#define SHIFT    6
+static bool isDragging = false;
+// static bool isMoving = false;
+static bool isPanning = false;
+static double lastX, lastY;
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-
-extern SelectedType selectedType; 
-
-static bool isDragging = false;
-static bool isMoving = false;
-static bool isPanning = false;
-static double lastX, lastY;
 
 void updateCameraVectors(Camera* camera) {
     Vector3 front;
@@ -38,7 +27,6 @@ void updateCameraVectors(Camera* camera) {
     camera->Up = vector_normalize(vector_cross(camera->Right, camera->Front));
     camera->view = getViewMatrix(camera);  // Update view matrix
 }
-
 
 void processMousePan(Camera* camera, float xoffset, float yoffset) {
     float sensitivity = 0.01f; 
@@ -54,10 +42,6 @@ void processMousePan(Camera* camera, float xoffset, float yoffset) {
     camera->Position = vector_add(camera->Position, vector_scale(up, yoffset));
     camera->view = getViewMatrix(camera);  // Update the view matrix
 }
-
-
-
-
 
 void initCamera(Camera* camera) {
     camera->Position = vector(0.0f, 0.0f, 3.0f);
@@ -93,6 +77,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 }
 
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
+    (void)window; 
     if (isDragging || isPanning) {
         double xoffset = xpos - lastX;
         double yoffset = lastY - ypos;
@@ -109,6 +94,8 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+    (void)window;
+    (void)xoffset; 
     processMouseScroll(&camera, (float)yoffset);
 }
 

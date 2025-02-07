@@ -1,6 +1,7 @@
 #include "textures.h"
 #include "SOIL2/SOIL2.h"
 #include <stdio.h>
+#include <string.h>
 
 const char* textureNames[] = {
     "blue",

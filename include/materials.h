@@ -1,8 +1,8 @@
 #ifndef MATERIALS_H
 #define MATERIALS_H
 
-#include <glad/glad.h>
-
+#include <glad/glad.h>  
+#include <GLFW/glfw3.h>
 typedef struct {
     GLuint albedoMap;
     GLuint normalMap;
