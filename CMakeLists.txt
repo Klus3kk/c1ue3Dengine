@@ -14,14 +14,20 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(PLATFORM_LINUX TRUE)
 endif()
 
-# Set output directories
+# Set output directories globally
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
-    string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG_UPPER)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER} ${CMAKE_SOURCE_DIR}/bin)
-endforeach()
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+
+# Setting applies to all configurations (Windows, Linux, MacOS)
+if (CMAKE_CONFIGURATION_TYPES) # Multi-config generators (Visual Studio)
+    foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
+        string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG_UPPER)
+        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER} ${CMAKE_SOURCE_DIR}/bin)
+    endforeach()
+else() # Single-config generators (Makefile, Ninja)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+endif()
 
 # Find OpenGL
 find_package(OpenGL REQUIRED)
