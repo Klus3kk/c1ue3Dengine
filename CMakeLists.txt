@@ -1,7 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.16)
 project(ClueEngine)
 
-# Set C standard and C++ standard
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -14,7 +13,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(PLATFORM_LINUX TRUE)
 endif()
 
-# Set output directories globally
+# Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
@@ -78,7 +77,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(soil2)
 include_directories(${soil2_SOURCE_DIR}/src)
 
-# Find GLFW (Separate for Windows & Linux/macOS)
+# ✅ Find GLFW (Windows / Linux / MacOS)
 if (PLATFORM_LINUX OR PLATFORM_MACOS)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(GLFW QUIET glfw3)
@@ -99,7 +98,7 @@ if (PLATFORM_LINUX OR PLATFORM_MACOS)
     endif()
 endif()
 
-# Find GLEW (Separate for Windows & Linux/macOS)
+# ✅ Find GLEW (Separate for Windows & Linux/macOS)
 if (PLATFORM_WINDOWS)
     include_directories(${CMAKE_SOURCE_DIR}/include) # Windows uses prebuilt GLEW
 else()
@@ -153,8 +152,13 @@ elseif (PLATFORM_LINUX)
     target_link_libraries(ClueEngine
         OpenGL::GL
         glfw
-        GLEW
+        ${GLFW_LIBRARIES}
+        ${GLEW_LIBRARY}
         assimp
+        soil2
+        cjson
+        tinyfiledialogs
+        m   # 🔥 Fix: Ensure math functions (cosf, sinf, sqrt) work
         pthread
         dl
     )
