@@ -4,7 +4,7 @@ metadata:
   name: clueengine-service
 spec:
   selector:
-    app: clueengine-gpu
+    app: clueengine
   ports:
     - protocol: TCP
       port: 8080

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clueengine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clueengine
+  template:
+    metadata:
+      labels:
+        app: clueengine
+    spec:
+      containers:
+        - name: clueengine
+          image: cluesec/clueengine:latest
+          ports:
+            - containerPort: 8080
+          securityContext:
+            privileged: true  
+            capabilities:
+              add:
+                - SYS_ADMIN
+      restartPolicy: Always
