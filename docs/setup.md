@@ -13,6 +13,8 @@ Before setting up **ClueEngine**, ensure the following tools are installed on yo
 - **GLFW** (Required on Linux/macOS)
 - **Docker** (optional for containerized setup)
 - **Visual Studio** (Windows only, for `.sln` support)
+- **Docker** (for containerized setup)
+- **Kubernetes & kubectl** (for Kubernetes deployment)
 
 If you prefer using Docker, **ClueEngine** provides a Dockerfile that automatically installs dependencies and sets up the environment.
 
@@ -122,10 +124,68 @@ docker build -t clueengine .
 Run the Docker container with the following command:
 
 ```bash
-docker run --rm -it --gpus all -v $(pwd):/app clueengine
+docker run --rm -it --net=host --env DISPLAY=$DISPLAY \
+    --device /dev/dri \
+    --device /dev/snd \
+    --group-add video \
+    --group-add audio \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    clueengine
 ```
 
 This command will start the container and run **ClueEngine** within the isolated environment.
+
+## Kubernetes Deployment (Optional)
+
+If you want to deploy **ClueEngine** using **Kubernetes**, follow these steps.
+
+### Step 1: Install Kubernetes and `kubectl`
+Follow the official [Kubernetes installation guide](https://kubernetes.io/docs/setup/) and install **kubectl**.
+
+### Step 2: Build and Push Docker Image
+Before deploying on Kubernetes, push the Docker image to a registry (e.g., Docker Hub, AWS ECR, or Google Container Registry).
+
+```bash
+# Tag and push to Docker Hub (replace YOUR_USERNAME with your Docker Hub username)
+docker tag clueengine YOUR_USERNAME/clueengine:v1.1.0
+docker push YOUR_USERNAME/clueengine:v1.1.0
+```
+
+### Step 3: Apply Kubernetes Configuration
+Apply the Kubernetes deployment and service YAML files:
+
+```bash
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+```
+
+### Step 4: Check Status
+
+Verify that the deployment is running:
+```bash
+kubectl get pods
+kubectl get deployments
+kubectl get services
+```
+
+If the pod is failing, check logs:
+```bash
+kubectl logs -f deployment/clueengine
+```
+
+### Step 5: Access ClueEngine
+
+If the service is of type `NodePort`, use:
+```bash
+kubectl get services
+```
+Find the **NodePort** and access ClueEngine via `http://localhost:<PORT>`.
+
+If using **LoadBalancer**, wait for the external IP:
+```bash
+kubectl get services clueengine-service
+```
+
 
 ## Next Steps
 

@@ -18,35 +18,40 @@ This engine can be used for creating interactive applications, games, or simulat
 
 ## Quick Start
 
-Here’s how you can quickly set up and get started with **ClueEngine**.
+### 1. **Clone the repository**
 
-1. **Clone the repository**
+```bash
+git clone https://github.com/Klus3kk/ClueEngine.git
+cd ClueEngine
+```
 
-    ```bash
-    git clone https://github.com/Klus3kk/ClueEngine.git
-    ```
+### 2. **Install dependencies**
 
-2. **Install dependencies**:
-    Refer to the [installation guide](docs/setup.md) for detailed steps.
+Refer to the [installation guide](docs/setup.md) for detailed steps.
 
-3. **Build the project**:
+### 3. **Build the project using CMake**
 
-    Navigate to the project directory and run:
+```bash
+cmake -B build -G Ninja
+ninja -C build
+```
 
-    ```bash
-    cmake . -Bbuild
-    cmake --build build
-    ```
+This will compile the engine and generate the **ClueEngine** executable in the `bin` directory.
 
-4. **Run the engine**:
-    Once built, you can run the engine executable.
+### 4. **Run the engine**
 
-    ```bash
-    ./build/ClueEngine
-    ```
+- **Linux/macOS**
+```bash
+./bin/ClueEngine
+```
+
+- **Windows**
+```bash
+./bin/ClueEngine.exe
+```
 
 5. **Modify or create your own scene**:
-    Use the **GUI** controls to add objects, adjust materials, and set up lights.
+Use the **GUI** controls to add objects, adjust materials, and set up lights.
 
 ## Installation
 
@@ -56,6 +61,31 @@ Here’s how you can quickly set up and get started with **ClueEngine**.
 - **GLAD**: For OpenGL function loading.
 - **Nuklear**: For the graphical user interface (GUI).
 - **SOIL2**: For loading textures.
+
+## Docker Deployment
+
+To run **ClueEngine** in a **Docker container**, follow these steps:
+
+### 1. **Install Docker**
+Follow the [official Docker installation guide](https://docs.docker.com/get-docker/).
+
+### 2. **Build the Docker Image**
+
+```bash
+docker build -t clueengine .
+```
+
+### 3. **Run the Docker Container**
+
+```bash
+docker run --rm -it --net=host --env DISPLAY=$DISPLAY \
+    --device /dev/dri \
+    --device /dev/snd \
+    --group-add video \
+    --group-add audio \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    clueengine
+```
 
 ### Build the Engine
 
@@ -95,7 +125,7 @@ The **docs** folder contains detailed explanations of specific aspects of **Clue
 2. [enginearchitecture.md](docs/enginearchitecture.md): An in-depth look at the engine's architecture, how the different modules interact, and the underlying design principles.
 3. [renderingpipeline.md](docs/renderingpipeline.md): Detailed documentation on how the rendering pipeline works, including shaders, materials, and texture loading.
 4. [userguide.md](docs/userguide.md): A practical guide to using the engine, including how to create scenes, manipulate objects, and use the GUI.
-5. [extendingtheengine.md](docs/extendingtheengine.md): A future plan with new plans for extending the engine, adding new features, object types, custom shaders etc.
+5. [extendingtheengine.md](docs/extendingtheengine.md): Future plans for adding **new features, shaders, and customizations**.
 
 ## License
 
