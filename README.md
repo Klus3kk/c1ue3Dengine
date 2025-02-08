@@ -8,7 +8,7 @@ ClueEngine is built to provide developers with the tools necessary to easily man
 
 This engine can be used for creating interactive applications, games, or simulations that require rich 3D rendering.
 
-### Key Features
+## Key Features
 
 - **Real-Time Rendering**: Powered by **OpenGL**, supporting 3D object rendering with detailed lighting and shading.
 - **PBR Materials**: The engine includes support for **Physically-Based Rendering** materials, ensuring realistic textures and effects.
@@ -32,6 +32,13 @@ Refer to the [installation guide](docs/setup.md) for detailed steps.
 ### 3. **Build the project using CMake**
 
 ```bash
+cmake . -Bbuild
+cmake --build build
+```
+
+Or, for faster building:
+
+```bash
 cmake -B build -G Ninja
 ninja -C build
 ```
@@ -50,12 +57,10 @@ This will compile the engine and generate the **ClueEngine** executable in the `
 ./bin/ClueEngine.exe
 ```
 
-5. **Modify or create your own scene**:
+### 5. **Modify or create your own scene**:
 Use the **GUI** controls to add objects, adjust materials, and set up lights.
 
-## Installation
-
-### Dependencies
+## Dependencies
 
 - **GLFW**: For window management and input handling.
 - **GLAD**: For OpenGL function loading.
@@ -86,12 +91,6 @@ docker run --rm -it --net=host --env DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     clueengine
 ```
-
-### Build the Engine
-
-1. **Ensure required libraries** are installed:
-   - GLFW, GLAD, Nuklear, SOIL2
-2. **Run the build commands** as outlined in the Quick Start section.
 
 ## How the Engine Works
 
